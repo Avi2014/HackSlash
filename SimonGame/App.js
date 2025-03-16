@@ -28,20 +28,17 @@ function playSound(name) {
   let audio = new Audio("sounds/" + name + ".mp3");
   audio.play();
 }
-$(".sound").click(function () {
-  simon.soundOn = !simon.soundOn;
-  $(".sound").text("Sound: " + (simon.soundOn ? "On" : "Off"));
-});
+
 function difficulty() {
   if (simon.level < 5) simon.difficulty = 300;
-  else if (simon.level < 10) simon.difficulty = 200;
-  else if (simon.level < 15) simon.difficulty = 100;
+  else if (simon.level < 10) simon.difficulty = 150;
+  else if (simon.level < 15) simon.difficulty = 80;
   else simon.difficulty = 40;
 }
 
 $(".startGame").click(function () {
   if (!simon.gameStarted) {
-    $(".startGame").text("click here to start");
+    $(".startGame").text("All the best!");
     $(".restart").text("Restart");
     simon.gameStarted = true;
     simon.gameOver = false;
@@ -89,10 +86,27 @@ function checkAnswer(currentLevel, userChosenColor) {
     if (simon.soundOn) {
       playSound("wrong");
     }
-    $(".restart").text("Restart");
+    $(".restart").text("Oops! start again");
     simon.gameOver = true;
     setTimeout(function () {
       $("body").removeClass("gameOver");
     }, 200);
   }
 }
+
+$(".sound").click(function () {
+  simon.soundOn = !simon.soundOn;
+  $(".sound").text("Sound: " + (simon.soundOn ? "On" : "Off"));
+});
+
+function gamePatternColors(simon) {
+  let colorPattern = "";
+  for (let index = 0; index < simon.gamePattern.length; index++) {
+    colorPattern += simon.gamePattern[index] + " ";
+  }
+  return colorPattern;
+}
+
+$(".help").click(function () {
+  alert(" " + gamePatternColors(simon));
+});
