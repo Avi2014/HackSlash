@@ -1,53 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Simon Says Game</title>
-        <style>
-        
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            color: #172529;
-        }
-        
-        .outerBox {
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #000000;
-            padding: 30px;
-            text-align: center;
-            margin: 20px;
-        }
-        .box {
-            height: 50px;
-            width: 50px;
-            cursor: pointer;
-            transition: transform 0.1s, background-color 0.3s;
-        }
-
-    </style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simon Says Game</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      color: #172529;
+    }
+    .outerBox {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #000000;
+      padding: 30px;
+      text-align: center;
+      margin: 20px;
+    }
+    .box {
+      height: 50px;
+      width: 50px;
+      cursor: pointer;
+      transition: transform 0.1s, background-color 0.3s;
+    }
+  </style>
 </head>
 <body>
-    <div class="outerBox">
-        <h2>Simon Says Game</h2>
-        <button class="startGame">Click here to start</button>
-        <h3>LEVEL: <span id="score">0</span></h3>
-
-        <div class="playground">
-            <div class="box" id="red" style="background-color: red;"></div>
-            <div class="box" id="green" style="background-color: green;"></div>
-            <div class="box" id="blue" style="background-color: blue;"></div>
-            <div class="box" id="yellow" style="background-color: yellow;"></div>
-        </div>
-
-        <button class="help">Help</button>
-        <button class="restart">Restart</button>
+  <div class="outerBox">
+    <h2>Simon Says Game</h2>
+    <button class="startGame">Click here to start</button>
+    <h3>LEVEL: <span id="score">0</span></h3>
+    <div class="playground">
+      <div class="box" id="red" style="background-color: red;"></div>
+      <div class="box" id="green" style="background-color: green;"></div>
+      <div class="box" id="blue" style="background-color: blue;"></div>
+      <div class="box" id="yellow" style="background-color: yellow;"></div>
     </div>
+    <button class="help">Help</button>
+    <button class="restart">Restart</button>
+  </div>
+  <script>
+    let simon = {
+      gamePattern: [],
+      userPattern: [],
+      colors: ["red", "green", "blue", "yellow"],
+      level: 0,
+      gameStarted: false,
+      gameOver: false,
+    };
+    function animatePress(currentColor) {
+      $("#" + currentColor).addClass("memFlash");
+      setTimeout(function() {
+        $("#" + currentColor).removeClass("memFlash");
+      }, 100);
+    }
+    $(".box").click(function() {
+      if (simon.gameStarted && !simon.gameOver) {
+        let userChosenColor = $(this).attr("id");
+        simon.userPattern.push(userChosenColor);
+        animatePress(userChosenColor);
+        checkAnswer(simon.userPattern.length - 1, userChosenColor);
+      }
+    });
+    $(".startGame").click(function() {
+      if (!simon.gameStarted) {
+        $(".startGame").text("click here to start");
+        $(".restart").text("Restart");
+        simon.gameStarted = true;
+        simon.gameOver = false;
+        simon.level = 0;
+        simon.gamePattern = [];
+        nextSequence();
+      }
+    });
+    function nextSequence() {
+      simon.userPattern = [];
+      simon.level++;
+      $("h3").text("LEVEL: " + simon.level);
+      $("#score").text(simon.level - 1);
+      let randomNumber = Math.floor(Math.random() * 4);
+      let randomChosenColor = simon.colors[randomNumber];
+      simon.gamePattern.push(randomChosenColor);
+      $("#" + randomChosenColor).fadeOut(300).fadeIn(300);
+    }
+    function checkAnswer(currentLevel, userChosenColor) {
+      if (simon.gamePattern[currentLevel] === simon.userPattern[currentLevel]) {
+        if (simon.gamePattern.length === simon.userPattern.length) {
+          setTimeout(function() {
+            nextSequence();
+          }, 1000);
+        }
+      } else {
+        $("body").addClass("gameOver");
+        $(".restart").text("Restart");
+        simon.gameOver = true;
+        setTimeout(function() {
+          $("body").removeClass("gameOver");
+        }, 200);
+      }
+    }
+  </script>
 </body>
 </html>
