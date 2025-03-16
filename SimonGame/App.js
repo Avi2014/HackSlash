@@ -28,6 +28,10 @@ function playSound(name) {
   let audio = new Audio("sounds/" + name + ".mp3");
   audio.play();
 }
+$(".sound").click(function () {
+  simon.soundOn = !simon.soundOn;
+  $(".sound").text("Sound: " + (simon.soundOn ? "On" : "Off"));
+});
 function difficulty() {
   if (simon.level < 5) simon.difficulty = 300;
   else if (simon.level < 10) simon.difficulty = 200;
@@ -92,7 +96,3 @@ function checkAnswer(currentLevel, userChosenColor) {
     }, 200);
   }
 }
-
-$(".help").click(function () {
-  alert(" " + gamePatternColors(simon));
-});

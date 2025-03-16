@@ -2,11 +2,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #919191;
   margin: 0;
   padding: 0;
   height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #172529;
 }
+
+.outerBox {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #61dafb;
+  padding: 30px;
+  text-align: center;
+  margin: 20px;
+  background-color: #fff;
+  border-radius: 15px;
+}
+
 .playground {
   padding: 20px;
   display: grid;
@@ -16,8 +30,15 @@ body {
   align-items: center;
   justify-content: center;
 }
-.gameOver {
-  background-color: #ff4c4c;
+
+.box {
+  border: 3px solid #61dafb;
+  border-radius: 15px;
+  height: 80px;
+  width: 80px;
+  cursor: pointer;
+  transition: transform 0.1s, background-color 0.3s;
+  box-shadow: 0px 0px 2px 5px rgb(0, 0, 0);
 }
 
 .box:active {
@@ -26,7 +47,8 @@ body {
 
 .help,
 .restart,
-.startGame {
+.startGame,
+.sound {
   border: 2px solid #61dafb;
   border-radius: 10px;
   padding: 10px 20px;
@@ -39,22 +61,24 @@ body {
 
 .help:hover,
 .restart:hover,
-.startGame:hover {
+.startGame:hover,
+.sound:hover {
   background-color: #61dafb;
   color: #20232a;
 }
 
-.outerBox {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #000000;
-  padding: 30px;
-  text-align: center;
-  margin: 20px;
+.memFlash {
+  background-color: #2c2c2d;
+  box-shadow: 0px 0px 20px 10px rgba(97, 218, 251, 0.8);
 }
-.box {
-  height: 50px;
-  width: 50px;
-  cursor: pointer;
-  transition: transform 0.1s, background-color 0.3s;
+
+.userFlash {
+  background-color: #282c34;
+  box-shadow: 0px 0px 20px 10px #282c34;
+  height: 115px;
+  width: 115px;
+}
+
+.gameOver {
+  background-color: #ff4c4c;
 }
