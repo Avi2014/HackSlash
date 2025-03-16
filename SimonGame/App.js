@@ -5,6 +5,8 @@ let simon = {
   level: 0,
   gameStarted: false,
   gameOver: false,
+  soundOn: true,
+  difficulty: 300,
 };
 
 function animatePress(currentColor) {
@@ -22,6 +24,16 @@ $(".box").click(function () {
     checkAnswer(simon.userPattern.length - 1, userChosenColor);
   }
 });
+function playSound(name) {
+  let audio = new Audio("sounds/" + name + ".mp3");
+  audio.play();
+}
+function difficulty() {
+  if (simon.level < 5) simon.difficulty = 300;
+  else if (simon.level < 10) simon.difficulty = 200;
+  else if (simon.level < 15) simon.difficulty = 100;
+  else simon.difficulty = 40;
+}
 
 $(".startGame").click(function () {
   if (!simon.gameStarted) {
@@ -54,12 +66,15 @@ function nextSequence() {
   let randomChosenColor = simon.colors[randomNumber];
   simon.gamePattern.push(randomChosenColor);
   $("#" + randomChosenColor)
-    .fadeOut(300)
-    .fadeIn(300);
+    .fadeOut(difficulty())
+    .fadeIn(difficulty());
 }
 
 function checkAnswer(currentLevel, userChosenColor) {
   if (simon.gamePattern[currentLevel] === simon.userPattern[currentLevel]) {
+    if (simon.soundOn) {
+      playSound(userChosenColor);
+    }
     if (simon.gamePattern.length === simon.userPattern.length) {
       setTimeout(function () {
         nextSequence();
@@ -67,6 +82,9 @@ function checkAnswer(currentLevel, userChosenColor) {
     }
   } else {
     $("body").addClass("gameOver");
+    if (simon.soundOn) {
+      playSound("wrong");
+    }
     $(".restart").text("Restart");
     simon.gameOver = true;
     setTimeout(function () {
@@ -74,3 +92,7 @@ function checkAnswer(currentLevel, userChosenColor) {
     }, 200);
   }
 }
+
+$(".help").click(function () {
+  alert(" " + gamePatternColors(simon));
+});
