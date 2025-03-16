@@ -46,7 +46,7 @@
     <button class="restart">Restart</button>
   </div>
   <script>
-    let simon = {
+    let simon = {   
       gamePattern: [],
       userPattern: [],
       colors: ["red", "green", "blue", "yellow"],
@@ -78,6 +78,15 @@
         simon.gamePattern = [];
         nextSequence();
       }
+    });
+    $(".restart").click(function() {
+      simon.gameStarted = false;
+      simon.gameOver = false;
+      simon.level = 0;
+      simon.gamePattern = [];
+      $("h3").text("LEVEL: " + simon.level);
+      $(".startGame").text("Click here to start again");
+      $("#score").text("0");
     });
     function nextSequence() {
       simon.userPattern = [];
